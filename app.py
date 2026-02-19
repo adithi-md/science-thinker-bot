@@ -77,8 +77,19 @@ if user_input:
                 messages=st.session_state.messages
             )
             bot_reply = response["message"]["content"]
-        except Exception as e:
-            bot_reply = f"Error: {e}"
+
+        except Exception:
+            # CLOUD SAFE FALLBACK
+            bot_reply = """
+⚠️ Live AI is available only in Local Mode.
+
+To run full AI:
+1. Install Ollama from https://ollama.com/download
+2. Run: ollama run llama3.2
+3. Start Streamlit locally
+
+This cloud version is demo-only.
+"""
 
     # Show assistant message
     with st.chat_message("assistant"):
@@ -90,6 +101,7 @@ if user_input:
 
     # Save reply for PDF
     st.session_state.last_bot_reply = bot_reply
+
 
 # ---------------- PDF BUTTON ----------------
 if "last_bot_reply" in st.session_state:
